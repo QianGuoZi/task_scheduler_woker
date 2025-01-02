@@ -287,9 +287,10 @@ def route_emulated_launch ():
 	it will launch the yml file.
 	"""
 	heartbeat.clear ()
-	filename = os.path.join (dirname, hostname + '.yml')
+	taskId = request.form['taskId']
+	filename = os.path.join (dirname, hostname + '_' + str(taskId) + '.yml')
 	request.files.get ('yml').save (filename)
-	cmd = 'sudo docker-compose -f ' + filename + ' up'
+	cmd = 'sudo COMPOSE_HTTP_TIMEOUT=120 docker-compose -f ' + filename + ' up'
 	print (cmd)
 	sp.Popen (cmd, shell=True, stderr=sp.STDOUT)
 	return ''
